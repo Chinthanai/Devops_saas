@@ -1,8 +1,11 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+app.use(cors());
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'UP', service: 'gateway-service' });
