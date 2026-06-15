@@ -1,78 +1,78 @@
 # Cloud Native AI HRMS Platform
 
-## Project Overview
-This project is a microservices-based SaaS foundation for a DevOps portfolio. It implements a Cloud Native AI HRMS Platform (Phase 1).
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
+[![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-## Architecture
-The platform is built using a microservices architecture, orchestrated with Docker Compose for local development.
+A modern, cloud-native microservices SaaS platform built for Human Resources Management, featuring AI-powered resume parsing, observability mockups, and scalable architecture.
 
-- **Frontend**: N/A (To be added)
-- **API Gateway**: Routes traffic to appropriate backend services.
-- **Microservices**: Auth, Employee, and AI-Ops services handling specific domains.
-- **Databases**: PostgreSQL (Relational Data), Redis (Caching/Sessions).
+## 🚀 Project Overview
 
-## Service List & Ports
+The Cloud Native AI HRMS Platform is designed to demonstrate enterprise-grade microservice architecture. It decouples business logic into discrete domain services, orchestrated by an API Gateway, and fronted by a sleek, dark-themed React SPA (Single Page Application). 
 
-- `gateway-service`: `8081` (mapped to internal `8080`)
-- `auth-service`: `4001`
-- `employee-service`: `4002`
-- `aiops-service`: `4003`
-- `postgres`: `5432`
-- `redis`: `6380` (mapped to internal `6379`)
+This project aims to be highly scalable, fault-tolerant, and ready for deployment into Kubernetes environments using modern GitOps and observability practices.
 
-## How to Run
+## 🏗️ Architecture
 
-1. Make sure you have Docker and Docker Compose installed.
-2. Clone the repository and navigate to the root directory.
-3. Run the following command to build and start all services in detached mode:
+### Docker Architecture
+The platform is containerized using Docker, allowing for a reproducible "local production stack". Docker Compose orchestrates 7 interconnected services attached to a custom internal Docker network:
+
+1. **Frontend Container:** An Nginx-based image serving the compiled React application on port `3000`. It utilizes a `try_files` fallback rule for seamless client-side routing.
+2. **API Gateway:** Acts as the single entry point (port `8081`) for the frontend, routing traffic to appropriate backend services while handling CORS.
+3. **Domain Services:** Node.js Express instances (Auth, Employee, AI-Ops) isolated on the internal network.
+4. **Data Layer:** PostgreSQL and Redis instances handling relational storage and rapid caching scenarios.
+
+### Service Communication Flow
+- The **React SPA** makes asynchronous HTTP requests using Axios to the `gateway-service` (`http://localhost:8081`).
+- The **Gateway Service** inspects the path (e.g., `/api/aiops`) and proxies the request to the internal `aiops-service` on port `4003`.
+- The internal microservices interact with **Postgres/Redis** before returning the consolidated data.
+
+*(For detailed architectural diagrams, please refer to [Platform Architecture](docs/architecture/platform-architecture.md))*
+
+## 🧩 Microservices Explanation
+
+- **`gateway-service`**: Reverse proxy and CORS middleware handler. Consolidates frontend ingress.
+- **`auth-service`**: Validates credentials and generates secure JSON Web Tokens (JWT) for stateless sessions.
+- **`employee-service`**: Core CRUD service managing the employee lifecycle, role assignments, and statuses.
+- **`aiops-service`**: Specialized service mocking advanced AI integrations, including Resume Parsing (score/skills matching) and Incident Log Analysis.
+- **`frontend`**: The user interface. Built using Vite, React, TailwindCSS, and Lucide Icons. Features a protected dashboard.
+
+## 📸 Screenshots
+
+*(Add screenshots of the Dashboard, Employee Directory, and AI Resume Analyzer here)*
+- [Dashboard View](screenshots/dashboard.png)
+- [Resume Analyzer](screenshots/analyzer.png)
+
+## 🏃 How to Run (Local Production Stack)
+
+To build and start the entire platform with one command:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
-4. To check the logs:
+**Access Points:**
+- **Frontend UI:** `http://localhost:3000`
+- **API Gateway:** `http://localhost:8081`
+
+**Test Healthchecks:**
+- Frontend: `curl http://localhost:3000/health`
+- Gateway: `curl http://localhost:8081/health`
+
+To view logs:
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
-5. To shut down the services:
+To shut down:
 ```bash
-docker-compose down
+docker compose down
 ```
 
-## API Test Commands (using curl)
+## 🗺️ Future Roadmap
 
-### Health Checks
-```bash
-curl http://localhost:8081/health
-curl http://localhost:4001/health
-curl http://localhost:4002/health
-curl http://localhost:4003/health
-```
-
-### Auth Service
-```bash
-curl -X POST http://localhost:8081/api/auth/login -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}'
-```
-
-### Employee Service
-```bash
-curl http://localhost:8081/api/employees/employees
-curl -X POST http://localhost:8081/api/employees/employees -H "Content-Type: application/json" -d '{"name":"Alice","role":"Backend Developer"}'
-```
-
-### AI-Ops Service
-```bash
-curl -X POST http://localhost:8081/api/aiops/resume/analyze
-curl -X POST http://localhost:8081/api/aiops/logs/analyze
-curl -X POST http://localhost:8081/api/aiops/incidents/analyze
-```
-
-## Future Roadmap
-- Kubernetes (K8s) deployment.
-- Helm charts for packaging.
-- ArgoCD for GitOps continuous delivery.
-- Terraform for Infrastructure as Code (IaC).
-- AWS EKS integration.
-- Observability stack: Prometheus, Grafana, Loki, Jaeger.
-- Message brokering with Kafka.
+- **Kubernetes (K8s):** Migration from Docker Compose to Kubernetes manifests (Deployments, Services, Ingress).
+- **GitOps:** CI/CD pipelines using GitHub Actions and ArgoCD.
+- **Infrastructure as Code:** Terraform implementation for AWS EKS provisioning.
+- **Observability:** Prometheus metrics, Grafana dashboards, and Jaeger distributed tracing.
