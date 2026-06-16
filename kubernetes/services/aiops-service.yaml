@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiops-service
+  namespace: cloud-native-ai-hrms
+spec:
+  type: ClusterIP
+  selector:
+    app: aiops-service
+  ports:
+    - protocol: TCP
+      port: 4003
+      targetPort: 4003

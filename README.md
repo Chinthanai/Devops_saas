@@ -38,23 +38,47 @@ The platform is containerized using Docker, allowing for a reproducible "local p
 - **`aiops-service`**: Specialized service mocking advanced AI integrations, including Resume Parsing (score/skills matching) and Incident Log Analysis.
 - **`frontend`**: The user interface. Built using Vite, React, TailwindCSS, and Lucide Icons. Features a protected dashboard.
 
+## ☸️ Kubernetes Architecture
+
+In Phase 4, the platform was migrated to a local Kubernetes deployment. This demonstrates enterprise-grade orchestration capabilities.
+
+- **Namespace**: `cloud-native-ai-hrms` isolates all resources.
+- **ConfigMaps & Secrets**: Secure injection of environment variables and database credentials.
+- **Probes**: Implement `livenessProbe` and `readinessProbe` for high availability.
+- **Resource Management**: Explicit CPU and Memory `requests` and `limits` to prevent noisy neighbor scenarios.
+- **Scaling**: App services run with `replicas: 2` for redundancy.
+- **Networking**: Internal microservices use internal `ClusterIP`. The Frontend and Gateway are exposed externally via `NodePort` mapping to `30080` and `30081`.
+
+### Kubernetes Workflow Explanation
+The Kubernetes manifests define the desired state. Applying these raw YAML manifests prompts the Kubernetes control plane to schedule Pods across nodes, setup internal DNS names (e.g. `http://auth-service:4001`), and manage self-healing if a container crashes. We rely on local images directly using `imagePullPolicy: Never` for a seamless local development loop.
+
 ## 📸 Screenshots
 
 *(Add screenshots of the Dashboard, Employee Directory, and AI Resume Analyzer here)*
 - [Dashboard View](screenshots/dashboard.png)
 - [Resume Analyzer](screenshots/analyzer.png)
+- [Kubernetes Deployment Logs](screenshots/kubernetes-deploy.png)
 
 ## 🏃 How to Run (Local Production Stack)
 
-To build and start the entire platform with one command:
-
+### Option A: Docker Compose
 ```bash
 docker compose up -d --build
 ```
-
-**Access Points:**
 - **Frontend UI:** `http://localhost:3000`
 - **API Gateway:** `http://localhost:8081`
+
+### Option B: Kubernetes (Local)
+See [kubernetes/README.md](kubernetes/README.md) for full instructions.
+```bash
+kubectl apply -f kubernetes/namespace.yaml
+kubectl apply -f kubernetes/configmap.yaml
+kubectl apply -f kubernetes/secret.yaml
+kubectl apply -f kubernetes/deployments/
+kubectl apply -f kubernetes/services/
+```
+- **Frontend UI:** `http://localhost:30080`
+- **API Gateway:** `http://localhost:30081`
 
 **Test Healthchecks:**
 - Frontend: `curl http://localhost:3000/health`

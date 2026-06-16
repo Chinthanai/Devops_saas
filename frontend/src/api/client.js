@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:30081';
+
 const client = axios.create({
-  baseURL: 'http://localhost:8081',
+  baseURL,
 });
 
 // Optionally add a request interceptor to inject the token if needed

@@ -6,24 +6,24 @@ export default function ResumeAnalyzer() {
   const [resumeText, setResumeText] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleAnalyze = async () => {
-    if (!resumeText) return;
+    if (!resumeText.trim()) return;
+
     setLoading(true);
+    setError(null);
     setResult(null);
+
     try {
-      // API call to mock gateway
-      const res = await client.post('/api/aiops/resume/analyze', { resume: resumeText });
-      
-      // Simulate rich UI data returning from the mock backend
-      setResult({
-        summary: res.data.analysis,
-        recommendation: "Proceed to Technical Interview",
-        score: 85,
-        skills: ["Docker", "Kubernetes", "Node.js", "React", "AWS"]
+      const res = await client.post('/api/aiops/resume/analyze', {
+        resumeText: resumeText,
       });
+
+      setResult(res.data);
     } catch (err) {
       console.error(err);
+      setError('Resume analysis failed. Please check the API service.');
     } finally {
       setLoading(false);
     }
@@ -37,18 +37,28 @@ export default function ResumeAnalyzer() {
       </div>
 
       <div className="bg-gray-800 rounded-lg border border-gray-700 p-6">
-        <label className="block text-sm font-medium text-gray-300 mb-2">Paste Resume Text</label>
+        <label className="block text-sm font-medium text-gray-300 mb-2">
+          Paste Resume Text
+        </label>
+
         <textarea
           rows={8}
           className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Paste the candidate's resume content here..."
           value={resumeText}
           onChange={(e) => setResumeText(e.target.value)}
-        ></textarea>
+        />
+
+        {error && (
+          <p className="mt-3 text-sm text-red-400">
+            {error}
+          </p>
+        )}
+
         <div className="mt-4 flex justify-end">
           <button
             onClick={handleAnalyze}
-            disabled={loading || !resumeText}
+            disabled={loading || !resumeText.trim()}
             className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors font-medium"
           >
             <Search size={18} />
@@ -59,33 +69,67 @@ export default function ResumeAnalyzer() {
 
       {result && (
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 space-y-6 animate-fade-in">
-          <h3 className="text-xl font-semibold text-white border-b border-gray-700 pb-3">Analysis Results</h3>
-          
+          <h3 className="text-xl font-semibold text-white border-b border-gray-700 pb-3">
+            Analysis Results
+          </h3>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2 space-y-4">
               <div>
-                <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">AI Summary</h4>
+                <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">
+                  AI Summary
+                </h4>
                 <p className="text-gray-200">{result.summary}</p>
               </div>
+
               <div>
-                <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">Recommendation</h4>
-                <p className="text-green-400 font-medium">{result.recommendation}</p>
+                <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-1">
+                  Recommendation
+                </h4>
+                <p className="text-green-400 font-medium">
+                  {result.recommendation}
+                </p>
               </div>
             </div>
-            
+
             <div className="bg-gray-900 p-4 rounded-lg flex flex-col items-center justify-center border border-gray-700">
-              <span className="text-sm text-gray-400 uppercase tracking-wider mb-2">Match Score</span>
+              <span className="text-sm text-gray-400 uppercase tracking-wider mb-2">
+                Match Score
+              </span>
               <div className="relative w-24 h-24 flex items-center justify-center rounded-full border-4 border-blue-500">
-                <span className="text-3xl font-bold text-white">{result.score}%</span>
+                <span className="text-3xl font-bold text-white">
+                  {result.score}%
+                </span>
               </div>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-2">Detected Skills</h4>
+            <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-2">
+              Detected Skills
+            </h4>
             <div className="flex flex-wrap gap-2">
-              {result.skills.map(skill => (
-                <span key={skill} className="px-3 py-1 bg-blue-900/50 text-blue-300 rounded-full text-sm font-medium border border-blue-800">
+              {(result.detectedSkills || []).map((skill) => (
+                <span
+                  key={skill}
+                  className="px-3 py-1 bg-blue-900/50 text-blue-300 rounded-full text-sm font-medium border border-blue-800"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-2">
+              Missing Skills
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {(result.missingSkills || []).map((skill) => (
+                <span
+                  key={skill}
+                  className="px-3 py-1 bg-red-900/50 text-red-300 rounded-full text-sm font-medium border border-red-800"
+                >
                   {skill}
                 </span>
               ))}
