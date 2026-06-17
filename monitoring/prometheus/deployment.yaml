@@ -27,6 +27,8 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus
+            - name: rules-volume
+              mountPath: /etc/prometheus/rules
             - name: data-volume
               mountPath: /prometheus
           resources:
@@ -52,5 +54,8 @@ spec:
         - name: config-volume
           configMap:
             name: prometheus-config
+        - name: rules-volume
+          configMap:
+            name: prometheus-rules
         - name: data-volume
           emptyDir: {}
