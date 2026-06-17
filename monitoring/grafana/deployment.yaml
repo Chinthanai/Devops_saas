@@ -15,6 +15,10 @@ spec:
       labels:
         app: grafana
     spec:
+      volumes:
+        - name: grafana-datasource-config
+          configMap:
+            name: grafana-datasource-config
       containers:
         - name: grafana
           image: grafana/grafana:latest
@@ -26,6 +30,10 @@ spec:
           ports:
             - containerPort: 3000
               name: http
+          volumeMounts:
+            - name: grafana-datasource-config
+              mountPath: /etc/grafana/provisioning/datasources/prometheus-datasource.yaml
+              subPath: prometheus-datasource.yaml
           resources:
             requests:
               cpu: "100m"
@@ -45,3 +53,4 @@ spec:
               port: 3000
             initialDelaySeconds: 15
             periodSeconds: 20
+    

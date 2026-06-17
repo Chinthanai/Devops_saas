@@ -1,0 +1,25 @@
+spec:
+  template:
+    spec:
+      volumes:
+        - name: grafana-datasource-config
+          configMap:
+            name: grafana-datasource-config
+        - name: grafana-dashboard-provider-config
+          configMap:
+            name: grafana-dashboard-provider-config
+        - name: grafana-dashboard-json
+          configMap:
+            name: grafana-dashboard-json
+      containers:
+        - name: grafana
+          volumeMounts:
+            - name: grafana-datasource-config
+              mountPath: /etc/grafana/provisioning/datasources/prometheus-datasource.yaml
+              subPath: prometheus-datasource.yaml
+            - name: grafana-dashboard-provider-config
+              mountPath: /etc/grafana/provisioning/dashboards/dashboard-provider.yaml
+              subPath: dashboard-provider.yaml
+            - name: grafana-dashboard-json
+              mountPath: /var/lib/grafana/dashboards/cloud-native-ai-hrms-dashboard.json
+              subPath: cloud-native-ai-hrms-dashboard.json

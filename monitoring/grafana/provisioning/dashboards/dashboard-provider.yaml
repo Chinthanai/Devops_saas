@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: cloud-native-ai-hrms
+    orgId: 1
+    folder: Cloud Native AI HRMS
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
