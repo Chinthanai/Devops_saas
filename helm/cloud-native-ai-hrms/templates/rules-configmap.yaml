@@ -1,0 +1,45 @@
+apiVersion: v1
+data:
+  alerts.rules.yml: |
+    groups:
+      - name: kubernetes-alerts
+        rules:
+          - alert: HighCPUUsage
+            expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 80
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High CPU usage detected"
+              description: "CPU usage is above 80% for more than 2 minutes."
+
+          - alert: HighMemoryUsage
+            expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 80
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High memory usage detected"
+              description: "Memory usage is above 80%."
+
+          - alert: PodRestartingFrequently
+            expr: increase(kube_pod_container_status_restarts_total[5m]) > 3
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Pod restarting frequently"
+              description: "A pod restarted more than 3 times within 5 minutes."
+
+          - alert: High5xxErrors
+            expr: sum(rate(gateway_service_http_requests_total{status_code=~"5.."}[1m])) > 1
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High 5xx error rate"
+              description: "Gateway service returning high number of 5xx errors."
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: cloud-native-ai-hrms

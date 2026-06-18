@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiops-service
+  namespace: cloud-native-ai-hrms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aiops-service
+  template:
+    metadata:
+      labels:
+        app: aiops-service
+    spec:
+      containers:
+        - name: aiops-service
+          image: devops_saas-aiops-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4003
+          env:
+            - name: PORT
+              value: "4003"
+            - name: DB_HOST
+              value: postgres
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+            - name: REDIS_HOST
+              value: redis
+            - name: REDIS_PORT
+              value: "6379"
+            - name: AI_MODE
+              value: RULE_BASED
+            - name: OLLAMA_BASE_URL
+              value: http://ollama-service:11434
+            - name: OLLAMA_MODEL
+              value: mistral
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 4003
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 4003
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            periodSeconds: 20

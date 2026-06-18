@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cloud-native-ai-hrms
+description: Cloud Native AI HRMS Platform with Kubernetes, GitOps, Monitoring and Observability
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
