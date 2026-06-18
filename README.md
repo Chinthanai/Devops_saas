@@ -1,11 +1,20 @@
-# Cloud Native AI HRMS Platform
+<p align="center">
+  <img src="https://img.shields.io/badge/Kubernetes-Production%20Ready-326CE5?logo=kubernetes&logoColor=white"/>
+  <img src="https://img.shields.io/badge/ArgoCD-GitOps-orange?logo=argo"/>
+  <img src="https://img.shields.io/badge/Helm-Charts-blue?logo=helm"/>
+  <img src="https://img.shields.io/badge/Prometheus-Monitoring-E6522C?logo=prometheus"/>
+  <img src="https://img.shields.io/badge/Grafana-Observability-F46800?logo=grafana"/>
+  <img src="https://img.shields.io/badge/Loki-Logging-000000?logo=grafana"/>
+  <img src="https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?logo=github-actions"/>
+  <img src="https://img.shields.io/badge/AWS-Cloud-FF9900?logo=amazonaws"/>
+</p>
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
-[![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)](https://hub.docker.com/r/your-repo/hrms)  
-[![Kubernetes](https://img.shields.io/badge/K8s-Ready-326CE5?logo=kubernetes)](https://kubernetes.io)  
-[![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=node.js)](https://nodejs.org)  
-[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://reactjs.org)  
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwindcss)](https://tailwindcss.com)
+<h1 align="center">☁️ Cloud Native AI HRMS Platform</h1>
+
+<p align="center">
+Production-Grade Microservices HRMS Platform with Kubernetes, GitOps, Observability, Autoscaling &amp; CI/CD
+</p>
+
 
 ---
 
