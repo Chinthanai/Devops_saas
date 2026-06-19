@@ -5,3 +5,24 @@ build/
 coverage/
 *.log
 .DS_Store
+```gitignore id="wgh90v"
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Node
+node_modules/
+
+# Logs
+*.log
+```
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+crash.*.log
