@@ -216,6 +216,32 @@ kubectl get pods -n hrms
 - **Optimised** PostgreSQL schema and Redis caching for high‑throughput employee CRUD operations.
 - **Authored** comprehensive documentation (README, architecture diagrams, troubleshooting guide) to accelerate onboarding for new engineers.
 
+
+## ☁️ Terraform AWS EKS Infrastructure
+
+This project includes Terraform Infrastructure as Code for provisioning AWS cloud infrastructure.
+
+### Terraform Components
+
+- VPC
+- Public subnets
+- Internet Gateway
+- Route table
+- IAM role for EKS cluster
+- IAM role for EKS worker nodes
+- EKS cluster
+- Managed node group
+
+### Terraform Commands
+
+```bash
+cd terraform/aws-eks
+
+terraform init
+terraform fmt
+terraform validate
+terraform plan
+
 ---
 
 *Happy hacking!*
