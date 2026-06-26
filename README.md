@@ -54,9 +54,9 @@ flowchart TB
 
 | Dashboard | Employees |
 |---|---|
-| ![Dashboard](/screenshots/dashboard.png) | ![Employees](/screenshots/employee-dashboard.png) |
+| ![Dashboard](/screenshots/dashboard-overview.png) | ![Employees](/screenshots/employee-dashboard.png) |
 | Incidents | Pods |
-| ![Incidents](/screenshots/incidents.png) | ![Pods](/screenshots/kubernetes-pods.png) |
+| ![Incidents](/screenshots/incidents-dashboard.png) | ![Pods](/screenshots/kubernetes-pods.png) |
 | Resume Analyzer |
 | ![Resume Analyzer](/screenshots/resume-analyzer-dashboard.png) |
 
