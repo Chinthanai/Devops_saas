@@ -28,33 +28,24 @@ Production-Grade Microservices HRMS Platform with Kubernetes, GitOps, Observabil
 
 ```mermaid
 flowchart TB
-    subgraph Frontend[Frontend (localhost:30080)]
-        FE[React Dashboard]
-    end
-    subgraph Gateway[API Gateway (localhost:30081)]
-        GW[Express.js]
-    end
-    subgraph Auth[Auth Service]
-        A[auth-service:4001]
-    end
-    subgraph Employee[Employee Service]
-        E[employee-service:4002]
-    end
-    subgraph AIops[AI‑Ops Service]
-        I[aiops-service:4003]
-    end
-    FE -->|HTTPS| GW
-    GW -->|/api/auth| A
-    GW -->|/api/employees| E
-    GW -->|/api/aiops| I
-    A -->|PostgreSQL| PG[PostgreSQL]
-    E -->|PostgreSQL| PG
-    I -->|Redis| R[Redis]
-    style Frontend fill:#E3F2FD,stroke:#90CAF9,stroke-width:2px;
-    style Gateway fill:#FFF3E0,stroke:#FFB74D,stroke-width:2px;
-    style Auth fill:#F1F8E9,stroke:#8BC34A,stroke-width:2px;
-    style Employee fill:#FCE4EC,stroke:#EC407A,stroke-width:2px;
-    style AIops fill:#EDE7F6,stroke:#7E57C2,stroke-width:2px;
+    FE["Frontend - localhost:30080"]
+    GW["API Gateway - localhost:30081"]
+    AUTH["Auth Service - auth-service:4001"]
+    EMP["Employee Service - employee-service:4002"]
+    AI["AI-Ops Service - aiops-service:4003"]
+    PG[(PostgreSQL)]
+    REDIS[(Redis)]
+
+    FE --> GW
+    GW --> AUTH
+    GW --> EMP
+    GW --> AI
+
+    AUTH --> PG
+    EMP --> PG
+    AUTH --> REDIS
+    EMP --> REDIS
+    AI --> REDIS
 ```
 
 ---
