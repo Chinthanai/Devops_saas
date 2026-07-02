@@ -198,16 +198,6 @@ kubectl get pods -n hrms
 
 ---
 
-## 📄 Resume / Interview Highlights
-
-- **Designed & delivered** a full‑stack, cloud‑native HRMS platform adopted by internal recruiting teams.
-- **Implemented** Docker‑based microservices architecture with API‑gateway routing, enabling zero‑downtime deployments.
-- **Automated** Kubernetes (k3d) deployments, demonstrating competence in container orchestration and CI/CD pipelines.
-- **Built** AI‑driven resume analysis feature using rule‑based scoring, showcasing ability to blend ML concepts with production code.
-- **Optimised** PostgreSQL schema and Redis caching for high‑throughput employee CRUD operations.
-- **Authored** comprehensive documentation (README, architecture diagrams, troubleshooting guide) to accelerate onboarding for new engineers.
-
-
 ## ☁️ Terraform AWS EKS Infrastructure
 
 This project includes Terraform Infrastructure as Code for provisioning AWS cloud infrastructure.
